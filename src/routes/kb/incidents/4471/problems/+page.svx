@@ -23,11 +23,20 @@ signature: v1.eyJzdWIiOiIxMDY3IiwiYXVkIjoiY2hhbGxlbmdlOndoYXQtaXQtc2hvd3MiLCJpYX
 
 [#4471](/kb/incidents/4471) says one bug: the parser reads dates month first. Its own table
 says otherwise. Read the reports, not the subject lines, and #4471 holds three problems with
-three different fixes. Queuing the parser fix closes only the first one.
+three different fixes. Engineering closed #4471 on 5 October, and that closes only two of them.
 
 <Callout kind="warn">
-#4471 is not known. Two of its problems had no ticket until this page. Each now has its own.
+#4471 is closed, but not done. `shift` was never in it as a problem of its own, so nothing fixed
+it. It stays open in its own ticket.
 </Callout>
+
+## Where each one stands
+
+| problem | engineering, 5 Oct | ticket |
+|---|---|---|
+| `parser` | fixed: `fix(dates): parse dd/mm for eu locales` | gh #1, closed |
+| `hint` | won't fix: booking-v3 form retired | gh #2, closed |
+| `shift` | not seen | gh #3, **open** |
 
 ## The three problems
 
@@ -36,14 +45,15 @@ three different fixes. Queuing the parser fix closes only the first one.
 ### `parser`: the shared parser reads every date month first
 
 A day-first tenant books 7 June; the invite says 6 July. It hits every tenant and every channel
-(app, email and form). This is the bug #4471 names, and the fix that is queued.
+(app, email and form). This is the bug #4471 names. Fixed on 5 October.
 
 ### `hint`: booking-v3's form tells people to type month first
 
 booking-v3 prints `MM/DD/YYYY` under its date field. People do what the hint says, then the form
 reads their date the tenant's way, day first. The parser fix does not touch this: the hint and
 the form disagree with each other. Only reports that came in through the form of a booking-v3
-tenant (alder.physio, copper.studio, pale.harbour) belong here. The fix is the hint, not the parser.
+tenant (alder.physio, copper.studio, pale.harbour) belong here. The fix was the hint, not the parser.
+Engineering retired the booking-v3 form instead, which ends it for new bookings.
 
 ### `shift`: dates move by one day
 
@@ -51,7 +61,7 @@ These reports are not a flip. "Tuesday 12 May, calendar says Monday 11 May". "Cl
 got Tuesday, client in Toronto got Monday". "Every booking in June is one day off". A day and a
 month that trade places cannot do that. It points at time zones or a daylight-saving boundary,
 not at date order. The desk saw it (`desk-notes.json`, "one-day move") and still filed these
-under the parser, by tenant.
+under the parser, by tenant, so the parser fix closed them on paper. They are still open.
 
 ## Why they were merged
 
@@ -70,7 +80,8 @@ The table the incident page already renders. It splits `hint` out but counts `sh
 
 ## What changes on the desk
 
-- Close #4471 against `parser` only. Reopen nothing; track `hint` and `shift` in their own tickets.
+- #4471 closed with `parser` fixed and `hint` retired. Track `shift` on its own (gh #3) until someone
+  finds its time-zone or daylight-saving cause.
 - When a report's body does not match the ticket's bug, split it out, even when the subject matches.
 - Decision 0001 needs a successor record: same subject is a hint to read, not a reason to merge.
 
