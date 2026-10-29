@@ -26,7 +26,7 @@ says otherwise. Read the reports, not the subject lines, and #4471 holds three p
 three different fixes. Engineering closed #4471 on 5 October, and that closes only two of them.
 
 <Callout kind="warn">
-#4471 is closed, but not done. `shift` was never in it as a problem of its own, so nothing fixed
+#4471 is closed, but not done. <code>shift</code> was never in it as a problem of its own, so nothing fixed
 it. It stays open in its own ticket.
 </Callout>
 
