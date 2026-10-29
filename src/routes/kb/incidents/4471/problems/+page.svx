@@ -1,0 +1,77 @@
+---
+layout: runbook
+title: '#4471 · three problems, not one'
+owner: support desk
+status: living
+reviewed: 2026-10-28
+signature: Jim Denton
+---
+
+<script>
+  import ProblemTable from '#lib/kb/ProblemTable.svelte';
+  import CauseTable from '#lib/kb/CauseTable.svelte';
+  import RenderStamp from '#lib/kb/RenderStamp.svelte';
+  import Callout from '#lib/kb/Callout.svelte';
+
+  const repo = 'https://github.com/Jimgerneer/mega-lesson-3/issues';
+  const tickets = {
+    parser: { label: 'gh #1', href: `${repo}/1` },
+    hint: { label: 'gh #2', href: `${repo}/2` },
+    shift: { label: 'gh #3', href: `${repo}/3` },
+  };
+</script>
+
+[#4471](/kb/incidents/4471) says one bug: the parser reads dates month first. Its own table
+says otherwise. Read the reports, not the subject lines, and #4471 holds three problems with
+three different fixes. Queuing the parser fix closes only the first one.
+
+<Callout kind="warn">
+#4471 is not known. Two of its problems had no ticket until this page. Each now has its own.
+</Callout>
+
+## The three problems
+
+<ProblemTable ticket={4471} {tickets} />
+
+### `parser`: the shared parser reads every date month first
+
+A day-first tenant books 7 June; the invite says 6 July. It hits every tenant and every channel
+(app, email and form). This is the bug #4471 names, and the fix that is queued.
+
+### `hint`: booking-v3's form tells people to type month first
+
+booking-v3 prints `MM/DD/YYYY` under its date field. People do what the hint says, then the form
+reads their date the tenant's way, day first. The parser fix does not touch this: the hint and
+the form disagree with each other. Only reports that came in through the form of a booking-v3
+tenant (alder.physio, copper.studio, pale.harbour) belong here. The fix is the hint, not the parser.
+
+### `shift`: dates move by one day
+
+These reports are not a flip. "Tuesday 12 May, calendar says Monday 11 May". "Client in Lisbon
+got Tuesday, client in Toronto got Monday". "Every booking in June is one day off". A day and a
+month that trade places cannot do that. It points at time zones or a daylight-saving boundary,
+not at date order. The desk saw it (`desk-notes.json`, "one-day move") and still filed these
+under the parser, by tenant.
+
+## Why they were merged
+
+- [Decision 0001](/kb/decisions/0001-dedupe-by-subject) merges on subject line alone, and every
+  one of these reports says some version of "wrong day". Same words, different bugs.
+- Intake's tag comes from the reporter's browser, not from the tenant: every report tagged `hint`
+  came from an `en-US` browser. Tag and cause disagree in both directions (see below). Do not
+  triage by the tag.
+
+## The desk's own view
+
+The table the incident page already renders. It splits `hint` out but counts `shift` under
+`parser` and leaves it in a footnote.
+
+<CauseTable ticket={4471} />
+
+## What changes on the desk
+
+- Close #4471 against `parser` only. Reopen nothing; track `hint` and `shift` in their own tickets.
+- When a report's body does not match the ticket's bug, split it out, even when the subject matches.
+- Decision 0001 needs a successor record: same subject is a hint to read, not a reason to merge.
+
+<RenderStamp signature={signature} />
