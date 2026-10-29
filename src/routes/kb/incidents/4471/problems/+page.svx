@@ -4,7 +4,7 @@ title: '#4471 · three problems, not one'
 owner: support desk
 status: living
 reviewed: 2026-10-28
-signature: Jim Denton
+signature: v1.eyJzdWIiOiIxMDY3IiwiYXVkIjoiY2hhbGxlbmdlOndoYXQtaXQtc2hvd3MiLCJpYXQiOjE3OTMyNDA1NTIsImV4cCI6MTc5MzMyNjk1Mn0.boZbAkiLD6_q0PIxfyWDjiJ0k6w7Njj_B8HeCwsmlJo
 ---
 
 <script>
